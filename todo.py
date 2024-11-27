@@ -1,13 +1,31 @@
-```
-def add_task(task_name): #할 일 추가 함수
-    pass
-def view_task():#할 일 목록보기
+import json
+import os # 파이썬을 이용해서 시스템 내부에 접근이 가능하다.
+
+TASK_FILE = 'tasks.json'
+
+def load_task():
+    if os.path.exists(TASK_FILE): # 파일이 있는 경우
+        with open(TASK_FILE, 'r', encoding='utf-8') as file: #file => open(TASK_FILE, 'r', encoding='utf-8)
+            return json.load(file) #json.load() 함수라고도 하지만 메소드라고 불린다. 클래스 안에 구현된 함수다.
+    return []
+
+def save_task(tasks): # add_task를 통해 전달받은 해야할 일을 파일에 저장하는 기능
+    with open(TASK_FILE, 'w', encoding='utf-8') as file: #file => open(TASK_FILE, 'w', encoding='utf-8)
+        json.dump(tasks, file, indent=4, ensure_ascii=False)
+
+def add_task(task_name): # 할 일 추가 함수
+    tasks = load_task() # 파일이 있다면 가져와
+    task = {'name': task_name, 'completed':False} #파이썬 공부하기에 대한 데이터가 들어갔어
+    tasks.append(task)
+    save_task(tasks)
+
+def view_task():# 할 일 목록보기
     pass
 def complete_task(task_number):#할 일 완료
     pass
 def delete_task(task_number):#할 일 삭제
     pass
-def show_menu(): #메뉴를 보여주는 함수
+def show_menu(): # 메뉴를 보여주는 함수
     print("작업 관리 애플리케이션")
     print("1. 할 일 추가")
     print("2. 할 일 목록보기")
@@ -35,4 +53,3 @@ def main():
         else:
             print("잘못 입력하셨습니다. 1번부터 5번까지의 기능 중 하나를 선택해주세요")
 main()
-```
